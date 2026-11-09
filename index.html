@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Нашлось! — бюро находок студентов</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="nav">
+      <a class="brand" href="#">
+        <span class="brandmark">⌕</span>
+        <span>
+          <span class="brand-nash">Наш</span><span class="brand-los">лось</span><span class="brand-bang">!</span>
+        </span>
+      </a>
+      <nav class="navlinks">
+        <a href="#feed">Объявления</a>
+        <a href="#how">Как это работает</a>
+      </nav>
+      <div class="navright">
+        <span class="userpill" id="userLabel">Привет, студент!</span>
+        <button class="btn primary" id="openAddTop">+ Разместить</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="hero">
+      <div>
+        <span class="eyebrow">✦ студенческое бюро находок</span>
+        <h1>Нужное находится <span>ближе,</span> чем кажется.</h1>
+        <p>Потерял вещь, ищешь учебник или хочешь поделиться конспектом? Собрали полезные объявления студентов в одном месте.</p>
+        <div class="actions">
+          <button class="btn primary" id="scrollToFeed">Смотреть объявления ↓</button>
+          <button class="btn secondary" id="openAddHero">＋ Подать объявление</button>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="art-note">Нашлось! · пространство студентов</div>
+        <div class="art-big">У хороших историй всегда есть находка.</div>
+        <div class="floating float1"><span class="float-icon">🎧</span>Наушники найдены!</div>
+        <div class="floating float2"><span class="float-icon">📚</span>Учебники рядом</div>
+      </div>
+    </section>
+
+    <section id="feed">
+      <div class="sectionhead">
+        <div>
+          <h2>Свежие объявления</h2>
+          <p>Возможно, здесь уже есть то, что ты ищешь</p>
+        </div>
+        <button class="btn secondary" id="openAddFeed">＋ Добавить своё</button>
+      </div>
+
+      <div class="feed-tools">
+        <div class="search">
+          <input id="search" type="text" placeholder="Поиск по объявлениям..." autocomplete="off">
+        </div>
+        <button class="filter active" data-filter="all">Все</button>
+        <button class="filter" data-filter="lost">🔎 Потеряшки</button>
+        <button class="filter" data-filter="rent">📚 Аренда</button>
+      </div>
+
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <section id="how" class="how">
+      <h2>Как это работает?</h2>
+      <p>Три простых шага — и нужная вещь может найти своего человека.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-icon">🔍</div>
+          <b>1. Найди</b>
+          <p>Посмотри объявления и выбери категорию.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">📣</div>
+          <b>2. Размести</b>
+          <p>Добавь описание, контакт и фотографию.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">🤝</div>
+          <b>3. Свяжись</b>
+          <p>Открой карточку и свяжись с автором.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      «Нашлось!» — учебный frontend-прототип · Данные сохраняются только в этом браузере (LocalStorage).
+    </div>
+  </footer>
+
+  <div class="modal-back" id="modalBack">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="modalTitle">Новое объявление</h2>
+        <button class="close" id="closeModal" type="button">×</button>
+      </div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+ <script src="js/app.js"></script>
+</body>
+</html>
