@@ -26,7 +26,7 @@ button, input, select, textarea { font: inherit; }
 button { cursor: pointer; border: 0; }
 a { color: inherit; }
 
-
+/* ---------- Шапка ---------- */
 .topbar {
   height: 76px;
   background: rgba(27, 23, 48, .88);
@@ -127,7 +127,7 @@ a { color: inherit; }
 
 .icon-btn .badge.show { display: grid; }
 
-
+/* ---------- Выпадающее меню профиля ---------- */
 .profile-menu {
   position: absolute;
   right: 5%;
@@ -139,7 +139,7 @@ a { color: inherit; }
   padding: 8px;
   box-shadow: var(--shadow);
   display: none;
-  z-index: 100; 
+  z-index: 100;
 }
 .profile-menu.open { display: block; }
 
@@ -157,7 +157,7 @@ a { color: inherit; }
 }
 .profile-menu button:hover { background: var(--soft); color: var(--accent); }
 
-
+/* ---------- Кнопки ---------- */
 .btn {
   padding: 12px 18px;
   border-radius: 14px;
@@ -187,7 +187,7 @@ a { color: inherit; }
 
 .wrap { width: min(1160px, calc(100% - 40px)); margin: auto; }
 
-
+/* ---------- Hero ---------- */
 .hero {
   padding: 48px 0 28px;
   display: grid;
@@ -281,7 +281,7 @@ a { color: inherit; }
 .float2 { right: 45px; bottom: 30px; transform: rotate(-4deg); }
 .float-icon { font-size: 23px; margin-right: 7px; }
 
-
+/* ---------- Панель поиска ---------- */
 .search-panel {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -323,7 +323,7 @@ a { color: inherit; }
   outline: 0;
 }
 
-
+/* ---------- Секции ---------- */
 .sectionhead {
   display: flex;
   align-items: end;
@@ -335,7 +335,7 @@ a { color: inherit; }
 .sectionhead h2 { font-size: 26px; letter-spacing: -.8px; margin: 0; }
 .sectionhead p { color: var(--muted); margin: 4px 0 0; }
 
-
+/* ---------- Категории ---------- */
 .categories {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -548,6 +548,7 @@ a { color: inherit; }
   border-radius: 18px;
 }
 
+/* ---------- Сайдбар ---------- */
 .sidebar { display: flex; flex-direction: column; gap: 14px; }
 
 .side-card {
@@ -587,6 +588,7 @@ a { color: inherit; }
   border: 1px solid #00e5ef44;
 }
 
+/* ---------- Статистика ---------- */
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -618,7 +620,7 @@ a { color: inherit; }
 .stat strong { display: block; font-size: 19px; color: var(--green); }
 .stat small { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-
+/* ---------- Футер ---------- */
 .footer {
   border-top: 1px solid var(--line);
   padding: 22px 0 35px;
@@ -632,6 +634,7 @@ a { color: inherit; }
 
 .footer a { color: var(--accent); cursor: pointer; }
 
+/* ---------- Модалки ---------- */
 .modal-back {
   display: none;
   position: fixed;
@@ -734,7 +737,7 @@ a { color: inherit; }
   margin-top: 14px;
 }
 
-
+/* ---------- Тосты ---------- */
 .toast {
   position: fixed;
   left: 50%;
@@ -756,7 +759,7 @@ a { color: inherit; }
 
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-
+/* ---------- Адаптив ---------- */
 @media (max-width: 980px) {
   .navlinks { display: none; }
   .search-panel { grid-template-columns: 1fr 1fr; }

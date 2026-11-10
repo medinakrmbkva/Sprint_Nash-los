@@ -188,7 +188,7 @@
   </footer>
 </main>
 
-<!-- Модалка: создание -->
+<!-- Модалка: Создание -->
 <div class="modal-back" id="createModal">
   <div class="modal wide">
     <div class="modal-head">
@@ -238,6 +238,14 @@
           <label>Описание *</label>
           <textarea id="postDescription" required maxlength="500" placeholder="Опиши вещь, детали и как с тобой связаться…"></textarea>
         </div>
+        
+        <!-- ПОЛЕ ДЛЯ ФОТО -->
+        <div class="field full">
+          <label>Фотография (необязательно)</label>
+          <input type="file" id="postPhoto" accept="image/*">
+          <div class="hint" style="font-size:11px;color:var(--muted)">Изображение конвертируется в Base64. Лучше до ~900 КБ.</div>
+        </div>
+
         <div class="field">
           <label>Твоё имя *</label>
           <input id="postAuthor" required placeholder="Как к тебе обращаться">
@@ -256,12 +264,12 @@
   </div>
 </div>
 
-<!-- Модалка: детали -->
+<!-- Модалка: Детали -->
 <div class="modal-back" id="detailModal">
   <div class="modal" id="detailContent"></div>
 </div>
 
-<!-- Модалка: помощь -->
+<!-- Модалка: Помощь -->
 <div class="modal-back" id="helpModal">
   <div class="modal">
     <div class="modal-head">
@@ -275,7 +283,7 @@
   </div>
 </div>
 
-<!-- Модалка: профиль -->
+<!-- Модалка: Профиль -->
 <div class="modal-back" id="profileModal">
   <div class="modal">
     <div class="modal-head">
