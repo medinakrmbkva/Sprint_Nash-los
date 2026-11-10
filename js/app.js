@@ -1,29 +1,33 @@
+const STORAGE_POSTS  = 'nashlos_posts';
+const STORAGE_SAVED  = 'nashlos_saved';
 const SCHEMA_VERSION = 2;
-const STORAGE_POSTS   = 'nashlos_posts';
-const STORAGE_NAME    = 'nashlos_name';
-const STORAGE_PALETTE = 'nashlos_palette';
-const MAX_FILE_SIZE   = 900 * 1024;
 
 
 const SEED = [
-  { id: 1, title: 'Потерялись беспроводные наушники', description: 'Белый футляр, кажется, оставила в библиотеке после второй пары. Буду благодарна за помощь!', category: 'lost', contact: 'Алина · @alina', emoji: '🎧', date: 'Сегодня' },
-  { id: 2, title: 'Сдам учебник по математике', description: 'Учебник в хорошем состоянии. Можно взять на неделю, договоримся после занятий.', category: 'rent', contact: 'Даня · кабинет 214', emoji: '📘', date: 'Сегодня' },
-  { id: 3, title: 'Найдена синяя флешка', description: 'Нашла возле кабинета информатики. Напишите, если ваша — уточню детали.', category: 'lost', contact: 'Соня · @sonya', emoji: '💾', date: 'Вчера' },
-  { id: 4, title: 'Учебник по истории в аренду', description: 'На месяц или на пару недель. Обложка немного помята, внутри всё целое.', category: 'rent', contact: 'Миша · @misha', emoji: '📚', date: 'Вчера' },
-  { id: 5, title: 'Кто забыл зелёный зонт?', description: 'Остался после занятий в аудитории. Передам владельцу на перемене.', category: 'lost', contact: 'Лера · кабинет 108', emoji: '☂️', date: 'Вчера' },
-  { id: 6, title: 'Отдам конспект по биологии', description: 'Аккуратный конспект за последний раздел. Можно сфотографировать или переписать.', category: 'rent', contact: 'Настя · @nastya', emoji: '📝', date: '2 дня назад' }
+  { id: 1, type: 'found', title: 'Найдены беспроводные наушники', category: 'Электроника', place: 'Библиотека', price: 'Хозяин, отзовись!', description: 'Нашла наушники в чёрном кейсе возле читального зала. Передам владельцу после уточнения деталей.', author: 'Алина', contact: '@alina', date: 'Сегодня', emoji: '🎧' },
+  { id: 2, type: 'rent', title: 'Учебник по математике', category: 'Учебники и конспекты', place: 'Главный корпус', price: '100 ₽ / неделя', description: 'Учебник в хорошем состоянии. Можно взять на неделю, пишите заранее.', author: 'Данияр', contact: '@daniyar', date: 'Сегодня', emoji: '📘' },
+  { id: 3, type: 'lost', title: 'Потерялась связка ключей', category: 'Личные вещи', place: 'Столовая', price: 'Вознаграждение', description: 'Три ключа на синем брелоке. Возможно, оставила на столике в столовой.', author: 'Маша', contact: '@masha', date: 'Вчера', emoji: '🔑' },
+  { id: 4, type: 'exchange', title: 'Обменяю конспекты по истории', category: 'Учебники и конспекты', place: 'Главный корпус', price: 'Обмен на информатику', description: 'Аккуратные конспекты за весь семестр. Ищу конспекты по информатике.', author: 'София', contact: '@sofia', date: 'Вчера', emoji: '📝' },
+  { id: 5, type: 'found', title: 'Найден зелёный термос', category: 'Личные вещи', place: 'Общежитие', price: 'Бесплатно', description: 'Термос стоит у вахты общежития. Чтобы забрать, назови марку и опиши наклейку.', author: 'Тимур', contact: '@timur', date: '2 дня назад', emoji: '🍶' },
+  { id: 6, type: 'rent', title: 'Калькулятор для учёбы', category: 'Электроника', place: 'Библиотека', price: '50 ₽ / день', description: 'Научный калькулятор, исправный. Подойдёт для контрольной и подготовки.', author: 'Кирилл', contact: '@kirill', date: '2 дня назад', emoji: '🧮' },
+  { id: 7, type: 'lost', title: 'Потерян студенческий билет', category: 'Личные вещи', place: 'Главный корпус', price: 'Очень важно найти', description: 'Студенческий билет в прозрачном чехле. Если кто-то видел — пожалуйста, напишите.', author: 'Лейла', contact: '@leila', date: '3 дня назад', emoji: '🪪' },
+  { id: 8, type: 'exchange', title: 'Отдам папку для черчения', category: 'Учебники и конспекты', place: 'Главный корпус', price: 'Обмен на блокнот', description: 'Папка формата А3, почти новая. Буду рада обменять на чистый блокнот.', author: 'Настя', contact: '@nastya', date: '3 дня назад', emoji: '📁' }
 ];
 
-const palettes = {
-  violet: { bg:'#100d1c', surface:'#1b1730', ink:'#f5f2ff', muted:'#aaa2c5', primary:'#a855ff', primary2:'#d36bff', accent:'#00e5ef', soft:'#2a2145', soft2:'#183a43', line:'#393052' },
-  lime:   { bg:'#0e1717', surface:'#182625', ink:'#f2fff8', muted:'#9db9ad', primary:'#b8ff38', primary2:'#00e6a8', accent:'#00e6a8', soft:'#263d32', soft2:'#1e4038', line:'#345148' },
-  cyber:  { bg:'#101222', surface:'#1b1d35', ink:'#f5f4ff', muted:'#aaa9c9', primary:'#00e5ef', primary2:'#a855ff', accent:'#ff4fd8', soft:'#252b4b', soft2:'#392448', line:'#393b60' },
-  ultra:  { bg:'#141020', surface:'#211832', ink:'#fff4ff', muted:'#b9a9c6', primary:'#8d5bff', primary2:'#ff4fd8', accent:'#b8ff38', soft:'#322247', soft2:'#422044', line:'#49365b' }
+const LABELS = {
+  lost: 'Потеряли',
+  found: 'Нашли',
+  rent: 'Аренда',
+  exchange: 'Обмен',
+  help: 'Помощь'
 };
 
 let posts = loadPosts();
+let saved = loadSaved();
 let activeFilter = 'all';
-let submitting = false;
+let searchTerm = '';
+let placeFilter = 'all';
+let sortMode = 'new';
 
 
 function loadPosts() {
@@ -31,362 +35,424 @@ function loadPosts() {
     const version = Number(localStorage.getItem(STORAGE_POSTS + '_v') || 0);
     const raw = localStorage.getItem(STORAGE_POSTS);
 
-   
     if (!raw || version !== SCHEMA_VERSION) {
       const fresh = SEED.map(p => ({ ...p }));
-      persist(fresh);
+      persistPosts(fresh);
       return fresh;
     }
 
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed) || parsed.length === 0) {
       const fresh = SEED.map(p => ({ ...p }));
-      persist(fresh);
+      persistPosts(fresh);
       return fresh;
     }
     return parsed;
   } catch {
     const fresh = SEED.map(p => ({ ...p }));
-    persist(fresh);
+    persistPosts(fresh);
     return fresh;
   }
 }
 
-function persist(list) {
+function loadSaved() {
+  try {
+    const arr = JSON.parse(localStorage.getItem(STORAGE_SAVED) || '[]');
+    return Array.isArray(arr) ? arr : [];
+  } catch {
+    return [];
+  }
+}
+
+function persistPosts(list) {
   try {
     localStorage.setItem(STORAGE_POSTS, JSON.stringify(list));
     localStorage.setItem(STORAGE_POSTS + '_v', String(SCHEMA_VERSION));
   } catch (e) {
-    toast('Не удалось сохранить: возможно, превышен размер хранилища.', 'error');
+    toast('Не удалось сохранить: возможно, превышен размер хранилища');
     console.error(e);
   }
 }
 
-function savePosts() {
-  persist(posts);
+function persistSaved() {
+  try {
+    localStorage.setItem(STORAGE_SAVED, JSON.stringify(saved));
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, c =>
-    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
   );
 }
 
-function normalizeCategory(c) {
-  const v = String(c ?? '').toLowerCase().trim();
-  if (v === 'lost' || v === 'потеряшки' || v === 'потеряшка') return 'lost';
-  if (v === 'rent' || v === 'аренда' || v === 'аренда / обмен') return 'rent';
+function normalizeType(t) {
+  const v = String(t ?? '').toLowerCase().trim();
+  if (v === 'lost' || v === 'потерял' || v === 'потеряшки') return 'lost';
+  if (v === 'found' || v === 'нашёл' || v === 'нашел') return 'found';
+  if (v === 'rent' || v === 'аренда') return 'rent';
+  if (v === 'exchange' || v === 'обмен') return 'exchange';
   return v;
 }
 
-function categoryLabel(cat) {
-  return cat === 'lost' ? 'ПОТЕРЯШКИ' : 'АРЕНДА / ОБМЕН';
+function priceNum(s) {
+  const n = String(s).match(/\d+/);
+  return n ? Number(n[0]) : 999999;
 }
 
-function toast(message, type = 'ok') {
-  let el = document.getElementById('toast');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = 'toast';
-    el.style.cssText = `
-      position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
-      background: #2a2145; color: #f5f2ff; border: 1px solid #393052;
-      padding: 12px 18px; border-radius: 12px; font-weight: 700;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35); z-index: 50;
-      opacity: 0; transition: opacity .2s; pointer-events: none;
-    `;
-    document.body.appendChild(el);
-  }
-  el.textContent = message;
-  el.style.borderColor = type === 'error' ? '#ff6b8a' : '#00e5ef';
-  el.style.color = type === 'error' ? '#ff6b8a' : '#00e5ef';
-  el.style.opacity = '1';
-  clearTimeout(el._t);
-  el._t = setTimeout(() => { el.style.opacity = '0'; }, 2600);
+function toast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
 }
 
 
 
-function loadUserName() {
-  return localStorage.getItem(STORAGE_NAME) || '';
-}
-
-function updateUserLabel() {
-  const el = document.getElementById('userLabel');
-  if (!el) return;
-  const name = loadUserName();
-  el.textContent = name ? `Привет, ${name}!` : 'Привет, студент!';
-  el.style.cursor = 'pointer';
-  el.title = 'Нажмите, чтобы изменить имя';
-}
-
-function askUserName() {
-  openModal(`
-    <form id="nameForm">
-      <div class="field">
-        <label>Как к вам обращаться?</label>
-        <input name="name" maxlength="40" value="${esc(loadUserName())}" placeholder="Например, Алина">
-      </div>
-      <div class="notice" id="nameNotice"></div>
-      <button class="btn primary" type="submit" style="width:100%;margin-top:8px">Сохранить</button>
-    </form>
-  `, 'Ваше имя');
-
-  document.getElementById('nameForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = e.target.name.value.trim();
-    localStorage.setItem(STORAGE_NAME, name);
-    updateUserLabel();
-    closeModal();
-    toast('Имя сохранено');
-  });
-}
-
-
-
-function applyPalette(name) {
-  const p = palettes[name] || palettes.violet;
-  Object.entries(p).forEach(([k, v]) =>
-    document.documentElement.style.setProperty('--' + k, v)
-  );
-  document.querySelectorAll('.palette').forEach(b =>
-    b.classList.toggle('selected', b.dataset.palette === name)
-  );
-}
-
-
-function renderPosts() {
+function render() {
   const box = document.getElementById('cards');
   if (!box) return;
 
-  const q = (document.getElementById('search')?.value || '').toLowerCase().trim();
-
-  const arr = posts.filter(p => {
-    const cat = normalizeCategory(p.category);
-    const matchFilter = activeFilter === 'all' || cat === activeFilter;
-    const haystack = `${p.title} ${p.description} ${p.contact}`.toLowerCase();
-    return matchFilter && haystack.includes(q);
+  let list = posts.filter(p => {
+    const type = normalizeType(p.type);
+    const matchFilter = activeFilter === 'all' || type === activeFilter;
+    const matchPlace = placeFilter === 'all' || p.place === placeFilter;
+    const haystack = `${p.title} ${p.description} ${p.category} ${p.place}`.toLowerCase();
+    const matchSearch = !searchTerm || haystack.includes(searchTerm.toLowerCase());
+    return matchFilter && matchPlace && matchSearch;
   });
 
-  if (!arr.length) {
-    const isFiltered = activeFilter !== 'all' || q;
+  if (sortMode === 'price') list.sort((a, b) => priceNum(a.price) - priceNum(b.price));
+  else list.sort((a, b) => b.id - a.id);
+
+  if (!list.length) {
     box.innerHTML = `
       <div class="empty-state">
-        Ничего не нашлось${isFiltered ? ' по этому фильтру или запросу' : ''}. ✨
-        ${isFiltered ? '<br><button class="btn secondary" id="resetFilters" style="margin-top:14px">Сбросить фильтры</button>' : ''}
+        <div style="font-size:32px;margin-bottom:10px">⌕</div>
+        <strong>Пока ничего не нашлось</strong>
+        <p>Попробуй изменить запрос или выбрать другой раздел.</p>
+        <button class="btn secondary" id="resetFilters" style="margin-top:14px">Сбросить фильтры</button>
       </div>`;
     document.getElementById('resetFilters')?.addEventListener('click', resetFilters);
-    return;
+  } else {
+    box.innerHTML = list.map(p => {
+      const type = normalizeType(p.type);
+      const isSaved = saved.includes(p.id);
+      const media = p.image
+        ? `<img src="${p.image}" alt="${esc(p.title)}">`
+        : (p.emoji || '📌');
+      return `
+        <article class="post" data-id="${p.id}">
+          <div class="post-img">
+            <span class="tag">${LABELS[type] || 'Объявление'}</span>
+            <button class="save ${isSaved ? 'saved' : ''}" data-save="${p.id}" title="В избранное">${isSaved ? '♥' : '♡'}</button>
+            ${media}
+          </div>
+          <div class="postbody">
+            <h3>${esc(p.title)}</h3>
+            <p>${esc(p.description)}</p>
+            <div class="postmeta">
+              <span class="price">${esc(p.price || 'Договорная')}</span>
+              <span class="owner">
+                <span class="owner-avatar">${esc((p.author || '?')[0].toUpperCase())}</span>
+                ${esc(p.author || 'Студент')}
+              </span>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    box.querySelectorAll('.post').forEach(el => {
+      el.addEventListener('click', e => {
+        if (e.target.closest('[data-save]')) return;
+        openDetail(Number(el.dataset.id));
+      });
+    });
+    box.querySelectorAll('[data-save]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        toggleSave(Number(btn.dataset.save));
+      });
+    });
   }
 
-  box.innerHTML = arr.map(p => {
-    const cat = normalizeCategory(p.category);
-    const media = p.image
-      ? `<img src="${p.image}" alt="${esc(p.title)}">`
-      : (p.emoji || '📌');
-    return `
-      <article class="post" data-id="${p.id}">
-        <div class="post-img">
-          <span class="tag">${categoryLabel(cat)}</span>
-          ${media}
-        </div>
-        <div class="postbody">
-          <h3>${esc(p.title)}</h3>
-          <p>${esc(p.description)}</p>
-          <div class="postmeta">
-            <span>${esc(p.date || 'Недавно')}</span>
-            <span class="contact">Подробнее →</span>
-          </div>
-        </div>
-      </article>
-    `;
-  }).join('');
+  document.querySelectorAll('[data-tab]').forEach(b =>
+    b.classList.toggle('active', b.dataset.tab === activeFilter));
+  document.querySelectorAll('[data-category]').forEach(b =>
+    b.classList.toggle('selected', b.dataset.category === activeFilter));
+  document.querySelectorAll('[data-nav]').forEach(b =>
+    b.classList.toggle('active', b.dataset.nav === activeFilter));
 
-  box.querySelectorAll('.post').forEach(el => {
-    el.addEventListener('click', () => showDetail(Number(el.dataset.id)));
-  });
+  const heading = document.getElementById('listingHeading');
+  const sub = document.getElementById('listingSub');
+  if (heading) heading.textContent = activeFilter === 'all' ? 'Свежие объявления' : (LABELS[activeFilter] || 'Объявления');
+  if (sub) sub.textContent = activeFilter === 'all'
+    ? 'Возможно, здесь уже есть то, что ты ищешь'
+    : 'Объявления из выбранного раздела';
+
+  const stat = document.getElementById('statPosts');
+  if (stat) stat.textContent = posts.length + 120;
+
+  const badge = document.getElementById('savedBadge');
+  if (badge) {
+    badge.textContent = String(saved.length);
+    badge.classList.toggle('show', saved.length > 0);
+  }
 }
 
-function setFilter(filter, btn) {
+function setFilter(filter) {
   activeFilter = filter;
-  document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  else document.querySelector(`.filter[data-filter="${filter}"]`)?.classList.add('active');
-  renderPosts();
+  render();
+  document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function resetFilters() {
   activeFilter = 'all';
-  document.querySelectorAll('.filter').forEach(b =>
-    b.classList.toggle('active', b.dataset.filter === 'all')
-  );
-  const s = document.getElementById('search');
-  if (s) s.value = '';
-  renderPosts();
+  searchTerm = '';
+  placeFilter = 'all';
+  const si = document.getElementById('searchInput');
+  const sp = document.getElementById('searchPlace');
+  const sc = document.getElementById('searchCategory');
+  if (si) si.value = '';
+  if (sp) sp.value = 'all';
+  if (sc) sc.value = 'all';
+  render();
 }
 
-
-function openModal(html, title) {
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalContent').innerHTML = html;
-  document.getElementById('modalBack').classList.add('show');
-}
-
-function closeModal() {
-  document.getElementById('modalBack').classList.remove('show');
-  submitting = false;
-}
-
-
-
-function openAdd() {
-  openModal(`
-    <form id="postForm" novalidate>
-      <div class="field">
-        <label>Категория</label>
-        <select name="category">
-          <option value="lost">Потеряшки — потерял(а) или нашёл(ла)</option>
-          <option value="rent">Аренда / обмен учебных материалов</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Заголовок *</label>
-        <input name="title" required maxlength="75" placeholder="Например, найден пенал">
-      </div>
-      <div class="field">
-        <label>Описание *</label>
-        <textarea name="description" required maxlength="500" placeholder="Расскажи подробнее..."></textarea>
-      </div>
-      <div class="field">
-        <label>Контакт для связи *</label>
-        <input name="contact" required placeholder="Имя, Telegram или где тебя найти">
-      </div>
-      <div class="field">
-        <label>Фотография (необязательно)</label>
-        <input type="file" name="photo" accept="image/*">
-        <div class="hint">Лучше небольшое изображение (до ~900 КБ).</div>
-      </div>
-      <div class="notice" id="formNotice"></div>
-      <button class="btn primary" type="submit" style="width:100%;margin-top:8px">Опубликовать</button>
-    </form>
-  `, 'Новое объявление');
-
-  document.getElementById('postForm').addEventListener('submit', submitPost);
-}
-
-function submitPost(e) {
-  e.preventDefault();
-  if (submitting) return;
-
-  const f = e.target;
-  const notice = document.getElementById('formNotice');
-  const title       = f.title.value.trim();
-  const description = f.description.value.trim();
-  const contact     = f.contact.value.trim();
-
-  const fail = (msg) => {
-    notice.textContent = msg;
-    notice.classList.add('error');
-  };
-
-  if (!title || !description || !contact) {
-    return fail('Заполните все обязательные поля: заголовок, описание и контакт.');
-  }
-
-  const file = f.photo.files[0];
-  if (file && file.size > MAX_FILE_SIZE) {
-    return fail('Файл слишком большой для демо (максимум около 900 КБ).');
-  }
-
-  notice.textContent = '';
-  notice.classList.remove('error');
-  submitting = true;
-
-  const addPost = (imageData) => {
-    posts.unshift({
-      id: Date.now(),
-      title,
-      description,
-      category: f.category.value,
-      contact,
-      image: imageData,
-      emoji: f.category.value === 'lost' ? '🔎' : '📚',
-      date: 'Только что'
-    });
-    savePosts();
-    renderPosts();
-    closeModal();
-    toast('Объявление опубликовано');
-  };
-
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => addPost(reader.result);
-    reader.onerror = () => {
-      fail('Не удалось прочитать изображение.');
-      submitting = false;
-    };
-    reader.readAsDataURL(file);
-  } else {
-    addPost(null);
-  }
+function toggleSave(id) {
+  saved = saved.includes(id) ? saved.filter(x => x !== id) : [...saved, id];
+  persistSaved();
+  render();
+  toast(saved.includes(id) ? 'Добавлено в избранное' : 'Удалено из избранного');
 }
 
 
 
-function showDetail(id) {
+function openModal(id) {
+  document.getElementById(id)?.classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id)?.classList.remove('show');
+}
+
+function openCreate(type = 'lost') {
+  const sel = document.getElementById('postType');
+  if (sel) sel.value = type;
+  openModal('createModal');
+}
+
+function openDetail(id) {
   const p = posts.find(x => x.id === id);
   if (!p) return;
-
+  const type = normalizeType(p.type);
   const media = p.image
     ? `<img class="detail-img" src="${p.image}" alt="${esc(p.title)}">`
     : `<div class="detail-emoji">${p.emoji || '📌'}</div>`;
 
-  const cat = normalizeCategory(p.category);
-
-  openModal(`
-    ${media}
-    <span class="eyebrow">${categoryLabel(cat)}</span>
-    <h2 style="margin:13px 0 7px">${esc(p.title)}</h2>
-    <p style="color:var(--muted)">${esc(p.description)}</p>
-    <div style="background:var(--soft);padding:14px;border-radius:14px;margin-top:17px">
-      <b>Связаться:</b><br>${esc(p.contact)}
+  const content = document.getElementById('detailContent');
+  content.innerHTML = `
+    <div class="modal-head">
+      <h2>Объявление</h2>
+      <button class="close" data-close="detailModal">×</button>
     </div>
-    <p class="hint">${esc(p.date || 'Недавно')}</p>
-  `, 'Объявление');
+    ${media}
+    <span class="eyebrow">${LABELS[type] || 'Объявление'}</span>
+    <h2 style="font-size:22px;margin:12px 0 7px">${esc(p.title)}</h2>
+    <div class="detail-info">
+      <span>⌖ ${esc(p.place)}</span>
+      <span>◷ ${esc(p.date || 'Недавно')}</span>
+      <span>Автор: ${esc(p.author || 'Студент')}</span>
+    </div>
+    <p class="detail-copy">${esc(p.description)}</p>
+    <div class="contact-box">
+      <strong>Связаться:</strong><br>
+      ${esc(p.contact || 'Контакт не указан')}
+    </div>
+    <div class="form-actions">
+      <button class="btn secondary" id="detailSave">${saved.includes(id) ? '♥ В избранном' : '♡ В избранное'}</button>
+      <button class="btn primary" id="contactAuthor">Связаться</button>
+    </div>
+  `;
+  openModal('detailModal');
+
+  document.querySelector('[data-close="detailModal"]')?.addEventListener('click', () => closeModal('detailModal'));
+  document.getElementById('detailSave')?.addEventListener('click', () => {
+    toggleSave(id);
+    openDetail(id);
+  });
+  document.getElementById('contactAuthor')?.addEventListener('click', () => {
+    if (p.contact) {
+      navigator.clipboard?.writeText(p.contact)
+        .then(() => toast('Контакт скопирован'))
+        .catch(() => toast('Контакт: ' + p.contact));
+    } else {
+      toast('Автор не указал контакт');
+    }
+  });
+}
+
+function showHelp(title = 'Помощь и правила') {
+  document.getElementById('helpTitle').textContent = title;
+  document.getElementById('helpBody').innerHTML = `
+    <p><strong>«Нашлось!»</strong> — студенческая доска объявлений для поиска потерянных вещей, публикации находок, аренды и обмена учебными материалами.</p>
+    <p><strong>1. Будь внимателен.</strong> Не публикуй пароли и чужие контакты без разрешения.</p>
+    <p><strong>2. Проверяй владельца.</strong> Проси описать отличительные признаки вещи.</p>
+    <p><strong>3. Общайся уважительно.</strong> Договаривайся о встрече в общественном месте кампуса.</p>
+    <p><strong>4. Это учебный прототип.</strong> Объявления сохраняются только в этом браузере.</p>
+  `;
+  openModal('helpModal');
+}
+
+function showProfile(which) {
+  document.getElementById('profileMenu')?.classList.remove('open');
+  const title = document.getElementById('profileTitle');
+  const body = document.getElementById('profileBody');
+
+  if (which === 'saved') {
+    const arr = posts.filter(p => saved.includes(p.id));
+    title.textContent = 'Избранные объявления';
+    body.innerHTML = arr.length
+      ? arr.map(p => `<p><strong>${esc(p.title)}</strong><br><span style="color:var(--muted)">${LABELS[normalizeType(p.type)] || ''} · ${esc(p.place)} · ${esc(p.price || '')}</span></p>`).join('')
+      : '<p>Пока нет сохранённых объявлений. Нажми ♡ на карточке, чтобы добавить её сюда.</p>';
+  } else if (which === 'myPosts') {
+    title.textContent = 'Мои объявления';
+    body.innerHTML = '<p>В прототипе авторство хранится локально. Здесь будут отображаться объявления, созданные с этого устройства.</p>';
+  } else if (which === 'help') {
+    showHelp();
+    return;
+  } else {
+    title.textContent = 'Мой профиль';
+    body.innerHTML = `
+      <p>Привет! Это твой локальный профиль в прототипе «Нашлось!».</p>
+      <p>Здесь можно смотреть избранное и свои объявления.</p>
+      <p><strong>Роль:</strong> студент</p>
+      <p><strong>Избранных:</strong> ${saved.length}</p>
+    `;
+  }
+  openModal('profileModal');
 }
 
 
 
+function handleCreate(e) {
+  e.preventDefault();
+  const notice = document.getElementById('formNotice');
+  const fail = msg => { notice.textContent = msg; notice.classList.add('error'); };
+
+  const title = document.getElementById('postTitle').value.trim();
+  const description = document.getElementById('postDescription').value.trim();
+  const author = document.getElementById('postAuthor').value.trim();
+
+  if (!title || !description || !author) {
+    return fail('Заполните обязательные поля: название, описание, имя.');
+  }
+
+  const type = document.getElementById('postType').value;
+  const post = {
+    id: Date.now(),
+    type,
+    title,
+    category: document.getElementById('postCategory').value,
+    place: document.getElementById('postPlace').value,
+    price: document.getElementById('postPrice').value.trim() || 'Договорная',
+    description,
+    author,
+    contact: document.getElementById('postContact').value.trim(),
+    date: 'Только что',
+    emoji: type === 'lost' ? '🔎' : type === 'found' ? '✅' : type === 'rent' ? '📚' : '🔁'
+  };
+
+  posts.unshift(post);
+  persistPosts(posts);
+  e.target.reset();
+  notice.textContent = '';
+  notice.classList.remove('error');
+  closeModal('createModal');
+  resetFilters();
+  toast('Объявление опубликовано');
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
-  applyPalette(localStorage.getItem(STORAGE_PALETTE) || 'violet');
-  updateUserLabel();
+  
+  document.querySelectorAll('[data-nav]').forEach(b => {
+    b.addEventListener('click', () => setFilter(b.dataset.nav));
+  });
 
-  document.getElementById('openAddTop')?.addEventListener('click', openAdd);
-  document.getElementById('openAddHero')?.addEventListener('click', openAdd);
-  document.getElementById('openAddFeed')?.addEventListener('click', openAdd);
 
-  document.getElementById('scrollToFeed')?.addEventListener('click', () => {
+  document.querySelectorAll('[data-tab]').forEach(b => {
+    b.addEventListener('click', () => setFilter(b.dataset.tab));
+  });
+
+ 
+  document.querySelectorAll('[data-category]').forEach(b => {
+    b.addEventListener('click', () => {
+      if (b.dataset.category === 'help') { showHelp(); return; }
+      setFilter(b.dataset.category);
+    });
+  });
+
+  
+  document.getElementById('allCategories')?.addEventListener('click', () => setFilter('all'));
+
+  document.getElementById('searchBtn')?.addEventListener('click', () => {
+    searchTerm = document.getElementById('searchInput').value.trim();
+    activeFilter = document.getElementById('searchCategory').value;
+    placeFilter = document.getElementById('searchPlace').value;
+    render();
     document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth' });
   });
-
-  document.getElementById('search')?.addEventListener('input', renderPosts);
-
-  document.querySelectorAll('.filter').forEach(btn => {
-    btn.addEventListener('click', () => setFilter(btn.dataset.filter, btn));
+  document.getElementById('searchInput')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('searchBtn')?.click();
   });
 
-  document.getElementById('closeModal')?.addEventListener('click', closeModal);
-  document.getElementById('modalBack')?.addEventListener('click', (e) => {
-    if (e.target.id === 'modalBack') closeModal();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+
+  document.getElementById('sortSelect')?.addEventListener('change', e => {
+    sortMode = e.target.value;
+    render();
   });
 
-  document.getElementById('userLabel')?.addEventListener('click', askUserName);
 
-  renderPosts();
+  ['openAddTop', 'openAddHero', 'openAddFeed', 'sideCreate'].forEach(id => {
+    document.getElementById(id)?.addEventListener('click', () => openCreate());
+  });
+
+
+  document.getElementById('rulesBtn')?.addEventListener('click', () => showHelp('Правила сервиса'));
+  document.getElementById('footerRules')?.addEventListener('click', () => showHelp('Правила сервиса'));
+  document.getElementById('footerHelp')?.addEventListener('click', () => showHelp());
+  document.getElementById('footerAbout')?.addEventListener('click', () => showHelp('О проекте'));
+
+
+  document.getElementById('savedTop')?.addEventListener('click', () => showProfile('saved'));
+  document.getElementById('profileBtn')?.addEventListener('click', () =>
+    document.getElementById('profileMenu')?.classList.toggle('open'));
+  document.querySelectorAll('[data-profile]').forEach(b =>
+    b.addEventListener('click', () => showProfile(b.dataset.profile)));
+
+  
+  document.querySelectorAll('[data-close]').forEach(b =>
+    b.addEventListener('click', () => closeModal(b.dataset.close)));
+  document.querySelectorAll('.modal-back').forEach(m =>
+    m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); }));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-back.show').forEach(m => closeModal(m.id));
+      document.getElementById('profileMenu')?.classList.remove('open');
+    }
+  });
+
+
+  document.getElementById('createForm')?.addEventListener('submit', handleCreate);
+
+ 
+  render();
 });

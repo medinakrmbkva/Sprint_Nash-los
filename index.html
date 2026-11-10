@@ -1,113 +1,296 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Нашлось! — бюро находок студентов</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Нашлось! — бюро находок студентов</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <header class="topbar">
-    <div class="nav">
-      <a class="brand" href="#">
-        <span class="brandmark">⌕</span>
-        <span>
-          <span class="brand-nash">Наш</span><span class="brand-los">лось</span><span class="brand-bang">!</span>
-        </span>
-      </a>
-      <nav class="navlinks">
-        <a href="#feed">Объявления</a>
-        <a href="#how">Как это работает</a>
-      </nav>
-      <div class="navright">
-        <span class="userpill" id="userLabel">Привет, студент!</span>
-        <button class="btn primary" id="openAddTop">+ Разместить</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="wrap">
-
-    <section class="hero">
-      <div>
-        <span class="eyebrow">✦ студенческое бюро находок</span>
-        <h1>Нужное находится <span>ближе,</span> чем кажется.</h1>
-        <p>Потерял вещь, ищешь учебник или хочешь поделиться конспектом? Собрали полезные объявления студентов в одном месте.</p>
-        <div class="actions">
-          <button class="btn primary" id="scrollToFeed">Смотреть объявления ↓</button>
-          <button class="btn secondary" id="openAddHero">＋ Подать объявление</button>
-        </div>
-      </div>
-      <div class="hero-art">
-        <div class="art-note">Нашлось! · пространство студентов</div>
-        <div class="art-big">У хороших историй всегда есть находка.</div>
-        <div class="floating float1"><span class="float-icon">🎧</span>Наушники найдены!</div>
-        <div class="floating float2"><span class="float-icon">📚</span>Учебники рядом</div>
-      </div>
-    </section>
-
-    <section id="feed">
-      <div class="sectionhead">
-        <div>
-          <h2>Свежие объявления</h2>
-          <p>Возможно, здесь уже есть то, что ты ищешь</p>
-        </div>
-        <button class="btn secondary" id="openAddFeed">＋ Добавить своё</button>
-      </div>
-
-      <div class="feed-tools">
-        <div class="search">
-          <input id="search" type="text" placeholder="Поиск по объявлениям..." autocomplete="off">
-        </div>
-        <button class="filter active" data-filter="all">Все</button>
-        <button class="filter" data-filter="lost">🔎 Потеряшки</button>
-        <button class="filter" data-filter="rent">📚 Аренда</button>
-      </div>
-
-      <div class="cards" id="cards"></div>
-    </section>
-
-    <section id="how" class="how">
-      <h2>Как это работает?</h2>
-      <p>Три простых шага — и нужная вещь может найти своего человека.</p>
-      <div class="steps">
-        <div class="step">
-          <div class="step-icon">🔍</div>
-          <b>1. Найди</b>
-          <p>Посмотри объявления и выбери категорию.</p>
-        </div>
-        <div class="step">
-          <div class="step-icon">📣</div>
-          <b>2. Размести</b>
-          <p>Добавь описание, контакт и фотографию.</p>
-        </div>
-        <div class="step">
-          <div class="step-icon">🤝</div>
-          <b>3. Свяжись</b>
-          <p>Открой карточку и свяжись с автором.</p>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="footer">
-    <div class="wrap">
-      «Нашлось!» — учебный frontend-прототип · Данные сохраняются только в этом браузере (LocalStorage).
-    </div>
-  </footer>
-
-  <div class="modal-back" id="modalBack">
-    <div class="modal">
-      <div class="modal-head">
-        <h2 id="modalTitle">Новое объявление</h2>
-        <button class="close" id="closeModal" type="button">×</button>
-      </div>
-      <div id="modalContent"></div>
+<header class="topbar">
+  <div class="nav">
+    <a class="brand" href="#">
+      <span class="brandmark">⌕</span>
+      <span>
+        <span class="brand-nash">Наш</span><span class="brand-los">лось</span><span class="brand-bang">!</span>
+      </span>
+    </a>
+    <nav class="navlinks" aria-label="Навигация">
+      <button class="active" data-nav="all">Главная</button>
+      <button data-nav="lost">Потерял</button>
+      <button data-nav="found">Нашёл</button>
+      <button data-nav="rent">Аренда</button>
+      <button data-nav="exchange">Обмен</button>
+    </nav>
+    <div class="navright">
+      <span class="userpill" id="userLabel">Привет, студент!</span>
+      <button class="icon-btn" id="savedTop" title="Избранное">♡<span class="badge" id="savedBadge">0</span></button>
+      <button class="btn primary" id="openAddTop">+ Разместить</button>
+      <button class="icon-btn" id="profileBtn" title="Профиль">👤</button>
     </div>
   </div>
+  <div class="profile-menu" id="profileMenu">
+    <button data-profile="my">Мой профиль</button>
+    <button data-profile="saved">Избранные</button>
+    <button data-profile="myPosts">Мои объявления</button>
+    <button data-profile="help">Помощь</button>
+  </div>
+</header>
 
- <script src="js/app.js"></script>
+<main class="wrap">
+
+  <section class="hero">
+    <div>
+      <span class="eyebrow">✦ студенческое бюро находок</span>
+      <h1>Нужное находится <span>ближе,</span> чем кажется.</h1>
+      <p>Потерял вещь, ищешь учебник или хочешь поделиться конспектом? Собрали полезные объявления студентов в одном месте.</p>
+      <div class="actions">
+        <button class="btn primary" id="scrollToFeed">Смотреть объявления ↓</button>
+        <button class="btn secondary" id="openAddHero">＋ Подать объявление</button>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="art-note">Нашлось! · пространство студентов</div>
+      <div class="art-big">У хороших историй всегда есть находка.</div>
+      <div class="floating float1"><span class="float-icon">🎧</span>Наушники найдены!</div>
+      <div class="floating float2"><span class="float-icon">📚</span>Учебники рядом</div>
+    </div>
+  </section>
+
+  <section class="search-panel" aria-label="Поиск">
+    <div class="search-field">
+      <span>⌕</span>
+      <input id="searchInput" placeholder="Что ищем? Например, наушники, учебник…">
+    </div>
+    <select id="searchCategory">
+      <option value="all">Все категории</option>
+      <option value="lost">Потерял</option>
+      <option value="found">Нашёл</option>
+      <option value="rent">Аренда</option>
+      <option value="exchange">Обмен</option>
+    </select>
+    <select id="searchPlace">
+      <option value="all">Любое место</option>
+      <option>Главный корпус</option>
+      <option>Библиотека</option>
+      <option>Столовая</option>
+      <option>Общежитие</option>
+    </select>
+    <button class="btn primary" id="searchBtn">Найти</button>
+  </section>
+
+  <section>
+    <div class="sectionhead">
+      <div>
+        <h2>Что будем искать?</h2>
+        <p>Выбери раздел — покажем подходящие объявления</p>
+      </div>
+      <button class="btn secondary" id="allCategories">Все объявления →</button>
+    </div>
+    <div class="categories" id="categories">
+      <button class="category" data-category="lost">
+        <span class="cat-icon cat-blue">🔎</span>
+        <strong>Потерял</strong>
+        <small>Поможем найти твоё</small>
+      </button>
+      <button class="category" data-category="found">
+        <span class="cat-icon cat-green">✅</span>
+        <strong>Нашёл</strong>
+        <small>Вернём вещи владельцам</small>
+      </button>
+      <button class="category" data-category="rent">
+        <span class="cat-icon cat-sand">📚</span>
+        <strong>Аренда</strong>
+        <small>Взять или сдать вещь</small>
+      </button>
+      <button class="category" data-category="exchange">
+        <span class="cat-icon cat-lilac">🔁</span>
+        <strong>Обмен</strong>
+        <small>Обменяться полезным</small>
+      </button>
+      <button class="category" data-category="help">
+        <span class="cat-icon cat-teal">💬</span>
+        <strong>Помощь</strong>
+        <small>Правила и поддержка</small>
+      </button>
+    </div>
+  </section>
+
+  <section id="feed">
+    <div class="sectionhead">
+      <div>
+        <h2 id="listingHeading">Свежие объявления</h2>
+        <p id="listingSub">Возможно, здесь уже есть то, что ты ищешь</p>
+      </div>
+      <button class="btn secondary" id="openAddFeed">＋ Добавить своё</button>
+    </div>
+
+    <div class="listings-layout">
+      <div>
+        <div class="toolbar">
+          <div class="tabs" id="tabs">
+            <button class="active" data-tab="all">Все</button>
+            <button data-tab="lost">Потеряли</button>
+            <button data-tab="found">Нашли</button>
+            <button data-tab="rent">Аренда</button>
+            <button data-tab="exchange">Обмен</button>
+          </div>
+          <select class="sort" id="sortSelect">
+            <option value="new">Сначала новые</option>
+            <option value="price">Сначала дешевле</option>
+          </select>
+        </div>
+        <div class="cards" id="cards"></div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="side-card">
+          <h3>Как это работает?</h3>
+          <p>Всего три простых шага — и нужная вещь может найтись.</p>
+          <div class="help-line"><span>1</span> Найди нужный раздел</div>
+          <div class="help-line"><span>2</span> Изучи объявления</div>
+          <div class="help-line"><span>3</span> Свяжись с автором</div>
+          <button class="btn ghost" style="width:100%;margin-top:12px" id="rulesBtn">Подробнее о правилах</button>
+        </div>
+        <div class="side-card tip-card">
+          <h3>Есть полезная вещь?</h3>
+          <p>Поделись учебником или вещью, которая пригодится другому студенту.</p>
+          <button class="btn primary" id="sideCreate" style="width:100%">Создать объявление ↗</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <span class="stat-icon">♡</span>
+      <div><strong id="statPosts">0</strong><small>объявлений в сообществе</small></div>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">✓</span>
+      <div><strong>46</strong><small>вещей уже нашли владельцев</small></div>
+    </div>
+    <div class="stat">
+      <span class="stat-icon">✦</span>
+      <div><strong>100%</strong><small>студенческая взаимопомощь</small></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Нашлось! · Студенческий проект</span>
+    <div style="display:flex;gap:18px">
+      <a id="footerRules">Правила</a>
+      <a id="footerHelp">Помощь</a>
+      <a id="footerAbout">О проекте</a>
+    </div>
+    <span>Данные хранятся в этом браузере (LocalStorage)</span>
+  </footer>
+</main>
+
+<!-- Модалка: создание -->
+<div class="modal-back" id="createModal">
+  <div class="modal wide">
+    <div class="modal-head">
+      <h2>Новое объявление</h2>
+      <button class="close" data-close="createModal">×</button>
+    </div>
+    <form id="createForm">
+      <div class="form-grid">
+        <div class="field">
+          <label>Тип</label>
+          <select id="postType" required>
+            <option value="lost">Потерял</option>
+            <option value="found">Нашёл</option>
+            <option value="rent">Аренда</option>
+            <option value="exchange">Обмен</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Категория вещи</label>
+          <select id="postCategory">
+            <option>Личные вещи</option>
+            <option>Учебники и конспекты</option>
+            <option>Электроника</option>
+            <option>Одежда и аксессуары</option>
+            <option>Другое</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Название *</label>
+          <input id="postTitle" required maxlength="70" placeholder="Например, найден синий пенал">
+        </div>
+        <div class="field">
+          <label>Место</label>
+          <select id="postPlace">
+            <option>Главный корпус</option>
+            <option>Библиотека</option>
+            <option>Столовая</option>
+            <option>Общежитие</option>
+            <option>Другое</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Цена / условия</label>
+          <input id="postPrice" placeholder="Бесплатно / 100 ₽ / обмен">
+        </div>
+        <div class="field full">
+          <label>Описание *</label>
+          <textarea id="postDescription" required maxlength="500" placeholder="Опиши вещь, детали и как с тобой связаться…"></textarea>
+        </div>
+        <div class="field">
+          <label>Твоё имя *</label>
+          <input id="postAuthor" required placeholder="Как к тебе обращаться">
+        </div>
+        <div class="field">
+          <label>Контакт</label>
+          <input id="postContact" placeholder="Telegram @username">
+        </div>
+      </div>
+      <div class="notice" id="formNotice"></div>
+      <div class="form-actions">
+        <button type="button" class="btn secondary" data-close="createModal">Отмена</button>
+        <button class="btn primary" type="submit">Опубликовать</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Модалка: детали -->
+<div class="modal-back" id="detailModal">
+  <div class="modal" id="detailContent"></div>
+</div>
+
+<!-- Модалка: помощь -->
+<div class="modal-back" id="helpModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="helpTitle">Помощь и правила</h2>
+      <button class="close" data-close="helpModal">×</button>
+    </div>
+    <div id="helpBody" class="detail-copy"></div>
+    <div class="form-actions">
+      <button class="btn primary" data-close="helpModal">Понятно</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модалка: профиль -->
+<div class="modal-back" id="profileModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="profileTitle">Мой профиль</h2>
+      <button class="close" data-close="profileModal">×</button>
+    </div>
+    <div id="profileBody" class="detail-copy"></div>
+    <div class="form-actions">
+      <button class="btn primary" data-close="profileModal">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
 </body>
 </html>
